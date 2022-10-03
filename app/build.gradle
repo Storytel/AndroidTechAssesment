@@ -113,6 +113,11 @@ dependencies {
     implementation Libs.AndroidX.Room.runtime
     implementation Libs.AndroidX.Room.ktx
 
+    testImplementation Libs.AndroidX.Test.core
+    testImplementation Libs.AndroidX.Test.rules
+    testImplementation Libs.AndroidX.Test.Ext.junit
+    testImplementation Libs.AndroidX.Test.Ext.coroutines
+
     kapt Libs.AndroidX.Room.compiler
 
     coreLibraryDesugaring Libs.jdkDesugar

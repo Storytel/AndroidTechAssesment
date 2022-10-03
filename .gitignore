@@ -83,3 +83,25 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+
+app/build/
+
+# Windows thumbnail db
+.DS_Store
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+.idea
+#.idea/workspace.xml - uncomment this and comment/delete .idea if it better suit your needs
+.gradle
+/*/local.properties
+/*/out
+/*/*/build
+*.iws
+*.ipr
+*~
+*.swp

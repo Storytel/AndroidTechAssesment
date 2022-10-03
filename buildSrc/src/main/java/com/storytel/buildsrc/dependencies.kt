@@ -1,5 +1,7 @@
 package com.storytel.buildsrc
 
+import org.gradle.api.artifacts.dsl.DependencyHandler
+
 object Libs {
     const val androidGradlePlugin = "com.android.tools.build:gradle:7.2.1"
     const val jdkDesugar = "com.android.tools:desugar_jdk_libs:1.1.5"
@@ -87,6 +89,7 @@ object Libs {
             object Ext {
                 private const val version = "1.1.2"
                 const val junit = "androidx.test.ext:junit-ktx:$version"
+                const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0"
             }
 
             const val espressoCore = "androidx.test.espresso:espresso-core:3.2.0"
