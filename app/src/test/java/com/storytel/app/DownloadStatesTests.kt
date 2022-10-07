@@ -25,24 +25,39 @@ import org.junit.Test
 class DownloadStatesTests {
     private val dispatcher = UnconfinedTestDispatcher()
 
+    /**
+     * The method [emitDownloadStates] emits Lists of [FormatDownloadState] objects. The method [formatsWithDownloadStates]
+     * should only return [Consumable]s with [Format]s that also has a [FormatDownloadState].
+     * So if a [Consumable] has [Format.EBOOK] and [Format.AUDIO_BOOK], but only a [FormatDownloadState] for the
+     * [Format.AUDIO_BOOK] is available, then it should not be in the list that that method [formatsWithDownloadStates]
+     * returns.
+     * Implement [formatsWithDownloadStates] so this test passes without changing anything but [formatsWithDownloadStates]
+     */
     @Test
-    fun `Ignore downloadStates updates for a Consumable until all format has a download state`() = runTest(dispatcher) {
-        val values = mutableListOf<List<FormatDownloadState>>()
-        val collectJob = launch(dispatcher) {
-            emitDownloadStates().map { list -> list.formatsWithDownloadStates() }.toList(values)
+    fun `Ignore downloadStates updates for a Consumable until all formats has a download state`() =
+        runTest(dispatcher) {
+            val values = mutableListOf<List<FormatDownloadState>>()
+            val collectJob = launch(dispatcher) {
+                //implement the method formatsWithDownloadStates so that the unit test will pass
+                emitDownloadStates().map { list -> list.formatsWithDownloadStates() }.toList(values)
+            }
+            assert(values.size == 4) //expect 4 lists
+            assert(values[0].size == 1) //the first list contain 1 [FormatDownloadState] since consumable 1 is still waiting for all its formats to have a [FormatDownloadState]
+            assert(values[1].size == 1)
+            assert(values[2].size == 3)
+            assert(values[3].size == 3)
+            collectJob.cancel()
         }
-        assert(values.size == 4)
-        assert(values[0].size == 1)
-        assert(values[1].size == 1)
-        assert(values[2].size == 3)
-        assert(values[3].size == 3)
-        collectJob.cancel()
-    }
 
+    /**
+     * Implement [toDownloadStateUiModel] so this test passes without changing anything but [toDownloadStateUiModel]
+     *
+     */
     @Test
     fun `map download state(s) to a DownloadStateUiModel`() = runTest(dispatcher) {
         val values = mutableListOf<List<DownloadStateUiModel>>()
         val collectJob = launch(dispatcher) {
+            //implement(or reuse) the method formatsWithDownloadStates and implement toDownloadStateUiModel so that the unit test will pass
             emitDownloadStates().map { list -> list.formatsWithDownloadStates().toDownloadStateUiModel() }
                 .toList(values)
         }
@@ -75,6 +90,9 @@ class DownloadStatesTests {
         collectJob.cancel()
     }
 
+    /**
+     * Do not change this method.
+     */
     private fun emitDownloadStates(): Flow<List<FormatDownloadState>> = flow {
         emit(
             listOf(
@@ -191,6 +209,10 @@ fun List<FormatDownloadState>.formatsWithDownloadStates(): List<FormatDownloadSt
 }
 
 /**
+ * A [Consumable] can have multiple [FormatDownloadState]s. This method combines all download states into 1
+ * [DownloadStateUiModel] per [Consumable], so the app can present 1 download state for each [Consumable].
+ * The user should not know that when downloading, there is actually multiple downloads ongoing.
+ * We want to present it as a single download.
  * @return a List of [DownloadStateUiModel]. There must only be returned one [DownloadStateUiModel] per [Consumable]
  */
 fun List<FormatDownloadState>.toDownloadStateUiModel(): List<DownloadStateUiModel> {
