@@ -201,6 +201,11 @@ data class Consumable(val consumableId: String, val formats: List<Format>)
 data class DownloadStateUiModel(val consumableId: String, val downloadProgressInPct: Int)
 
 /**
+ * List<FormatDownloadState> represents download states for [Consumable]s. The list is not sorted.
+ * Imagine that the app only wants to display download progress once it starts receiving download states for
+ * all formats that the [Consumable] contains. So if the consumable has two [Format]s, then there must be two
+ * [FormatDownloadState] objects in the list as well otherwise all [FormatDownloadState] belonging to that
+ * [Consumable] must be filtered out from the list.
  * @return a list of [FormatDownloadState]s where each [Format] in a [Consumable] has a [FormatDownloadState].
  * If a Format is missing a download state, then that FormatDownloadState should not be present in the list
  */
