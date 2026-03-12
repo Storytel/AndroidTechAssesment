@@ -12,12 +12,13 @@ kapt {
 }
 
 android {
-    compileSdkVersion 32
+    namespace 'com.storytel.app'
+    compileSdk 34
 
     defaultConfig {
         applicationId 'com.storytel.app'
-        minSdkVersion 21
-        targetSdkVersion 32
+        minSdk 21
+        targetSdk 34
         versionCode 1
         versionName '1.0'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -32,10 +33,10 @@ android {
         }
     }
 
-    packagingOptions {
+    packaging {
         // The Rome library JARs embed some internal utils libraries in nested JARs.
         // We don't need them so we exclude them in the final package.
-        exclude "/*.jar"
+        resources.excludes += "/*.jar"
     }
 
     signingConfigs {
@@ -63,16 +64,17 @@ android {
         // Flag to enable support for the new language APIs
         coreLibraryDesugaringEnabled true
 
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     buildFeatures {
         compose true
+        buildConfig true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
+        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.compilerVersion
     }
 }
 
@@ -99,8 +101,6 @@ dependencies {
     implementation Libs.AndroidX.Navigation.navigation
 
     implementation Libs.AndroidX.Window.window
-
-    implementation Libs.Accompanist.pager
 
     implementation Libs.Coil.coilCompose
 
