@@ -112,7 +112,7 @@ fun EpisodeListItem(
     ConstraintLayout(modifier = modifier) {
         val (
             divider, episodeTitle, podcastTitle, image, playIcon,
-            date, addPlaylist, overflow
+            date, addPlaylist
         ) = createRefs()
 
         Divider(

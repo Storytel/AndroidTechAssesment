@@ -24,9 +24,9 @@ import androidx.compose.ui.res.painterResource
 import com.storytel.app.R
 
 @Composable
-fun Home() {
-    Surface(Modifier.fillMaxSize()) {
-        HomeContent(modifier = Modifier.fillMaxSize())
+fun Home(modifier: Modifier = Modifier) {
+    Surface(modifier = modifier.fillMaxSize()) {
+        HomeContent()
     }
 }
 
@@ -50,7 +50,7 @@ fun HomeAppBar(
 }
 
 @Composable
-fun HomeContent(modifier: Modifier = Modifier, ) {
+fun HomeContent(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.windowInsetsPadding(
             WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
