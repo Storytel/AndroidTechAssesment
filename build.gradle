@@ -1,28 +1,10 @@
-import com.storytel.buildsrc.Libs
-
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath Libs.androidGradlePlugin
-        classpath Libs.Kotlin.gradlePlugin
-    }
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.kapt) apply false
 }
 
 subprojects {
-    repositories {
-        google()
-        mavenCentral()
-
-        // Jetpack Compose SNAPSHOTs
-        if (!Libs.AndroidX.Compose.snapshot.isEmpty()) {
-            maven { url "https://androidx.dev/snapshots/builds/${Libs.AndroidX.Compose.snapshot}/artifacts/repository/" }
-        }
-    }
-
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions {
             // Treat all Kotlin warnings as errors (disabled by default)

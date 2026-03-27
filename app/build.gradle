@@ -1,9 +1,7 @@
-import com.storytel.buildsrc.Libs
-
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 kapt {
@@ -74,51 +72,51 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.compilerVersion
+        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
     }
 }
 
 dependencies {
-    implementation Libs.Kotlin.stdlib
-    implementation Libs.Coroutines.android
+    implementation libs.kotlin.stdlib
+    implementation libs.coroutines.android
 
-    implementation Libs.AndroidX.coreKtx
-    implementation Libs.AndroidX.palette
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.palette
 
-    implementation Libs.AndroidX.Activity.activityCompose
+    implementation libs.androidx.activity.compose
 
-    implementation Libs.AndroidX.Constraint.constraintLayoutCompose
+    implementation libs.androidx.constraintlayout.compose
 
-    implementation Libs.AndroidX.Compose.foundation
-    implementation Libs.AndroidX.Compose.material
-    implementation Libs.AndroidX.Compose.materialIconsExtended
-    implementation Libs.AndroidX.Compose.toolingPreview
-    debugImplementation Libs.AndroidX.Compose.tooling
+    implementation libs.compose.foundation
+    implementation libs.compose.material
+    implementation libs.compose.material.icons.extended
+    implementation libs.compose.tooling.preview
+    debugImplementation libs.compose.tooling
 
-    implementation Libs.AndroidX.Lifecycle.runtime
-    implementation Libs.AndroidX.Lifecycle.viewmodel
-    implementation Libs.AndroidX.Lifecycle.viewModelCompose
-    implementation Libs.AndroidX.Navigation.navigation
+    implementation libs.lifecycle.runtime
+    implementation libs.lifecycle.viewmodel
+    implementation libs.lifecycle.viewmodel.compose
+    implementation libs.navigation.compose
 
-    implementation Libs.AndroidX.Window.window
+    implementation libs.androidx.window
 
-    implementation Libs.Coil.coilCompose
+    implementation libs.coil.compose
 
-    implementation Libs.OkHttp.okhttp
-    implementation Libs.OkHttp.logging
+    implementation libs.okhttp
+    implementation libs.okhttp.logging
 
-    implementation Libs.Rome.rome
-    implementation Libs.Rome.modules
+    implementation libs.rome
+    implementation libs.rome.modules
 
-    implementation Libs.AndroidX.Room.runtime
-    implementation Libs.AndroidX.Room.ktx
+    implementation libs.room.runtime
+    implementation libs.room.ktx
 
-    testImplementation Libs.AndroidX.Test.core
-    testImplementation Libs.AndroidX.Test.rules
-    testImplementation Libs.AndroidX.Test.Ext.junit
-    testImplementation Libs.AndroidX.Test.Ext.coroutines
+    testImplementation libs.test.core
+    testImplementation libs.test.rules
+    testImplementation libs.test.junit
+    testImplementation libs.coroutines.test
 
-    kapt Libs.AndroidX.Room.compiler
+    kapt libs.room.compiler
 
-    coreLibraryDesugaring Libs.jdkDesugar
+    coreLibraryDesugaring libs.jdk.desugar
 }
