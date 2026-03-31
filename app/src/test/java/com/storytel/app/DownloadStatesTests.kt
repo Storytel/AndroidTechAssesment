@@ -14,15 +14,21 @@ import org.junit.Test
  * TECH ASSESSMENT - DOWNLOAD STATES
  * ========================================
  *
- * OVERVIEW:
- * A [Consumable] is a representation of a Book or Podcast that can be downloaded.
- * A [Consumable] has one or more [Format]s (AUDIO_BOOK and/or EBOOK).
- * When downloading, each [Format] has its own [FormatDownloadState] with download progress.
+ * BACKGROUND:
+ * In our app, a book can be available in multiple formats — for example both as an audiobook and an ebook.
+ * When a user starts downloading such a book, one download per format is started (max 2 formats).
+ * We want to show a single combined download progress indicator for the whole book.
+ *
+ * We only display progress once ALL formats have started downloading. The reason: without knowing
+ * the total size of every format, we cannot calculate the correct combined percentage.
+ *
+ * The list of active download states is flat and unsorted. If the user is downloading 3 books at once,
+ * all their format states are mixed together — e.g. 2 states for book A, 1 for book B, 2 for book C.
  *
  * YOUR TASK:
  * Implement TWO extension functions at the bottom of this file:
- *   1. formatsWithDownloadStates() - filters download states
- *   2. toDownloadStateUiModel() - combines download states into UI models
+ *   1. formatsWithDownloadStates() - filters out consumables that don't yet have all formats downloading
+ *   2. toDownloadStateUiModel() - combines all format states per consumable into one progress percentage
  *
  * DO NOT MODIFY:
  *   - The test methods themselves
@@ -32,10 +38,6 @@ import org.junit.Test
  * HOW TO RUN THE TESTS:
  * Run these tests in your IDE or use: ./gradlew test
  * Both tests must pass for the assessment to be complete.
- *
- * WHAT THE TESTS ARE CHECKING:
- * Test 1: Filter out incomplete download states (wait for all formats before showing progress)
- * Test 2: Combine multiple format downloads into a single progress percentage per consumable
  */
 class DownloadStatesTests {
     private val dispatcher = UnconfinedTestDispatcher()
@@ -260,7 +262,10 @@ class DownloadStatesTests {
 }
 
 /**
- * Download state for a [Format]. A Consumable can have 1 or 2 [Format]s
+ * Represents the download progress of one specific format for a consumable.
+ *
+ * Example: a book (consumable) that has both AUDIO_BOOK and EBOOK will have two separate
+ * [FormatDownloadState] objects — one tracking the audiobook download, one tracking the ebook download.
  */
 data class FormatDownloadState(
     val consumable: Consumable,
