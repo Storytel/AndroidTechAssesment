@@ -263,6 +263,7 @@ class DownloadStatesTests {
 
 /**
  * Represents the download progress of one specific format for a consumable.
+ * The presence of a [FormatDownloadState] in the list means that format's download has started.
  *
  * Example: a book (consumable) that has both AUDIO_BOOK and EBOOK will have two separate
  * [FormatDownloadState] objects — one tracking the audiobook download, one tracking the ebook download.
@@ -292,30 +293,9 @@ data class Consumable(val consumableId: String, val formats: List<Format>)
 data class DownloadStateUiModel(val consumableId: String, val downloadProgressInPct: Int)
 
 /**
- * ========================================
- * EXTENSION FUNCTION 1: formatsWithDownloadStates
- * ========================================
- *
- * GOAL:
- * Filter this list to ONLY include download states for consumables that have ALL their formats downloading.
- * If a consumable is missing download states for any of its formats, exclude ALL its download states.
- *
- * EXAMPLE INPUT:
- * [
- *   FormatDownloadState(consumable: Consumable(id="1", formats=[AUDIO_BOOK, EBOOK]), format=AUDIO_BOOK, ...),
- *   FormatDownloadState(consumable: Consumable(id="2", formats=[AUDIO_BOOK]), format=AUDIO_BOOK, ...)
- * ]
- *
- * EXAMPLE OUTPUT:
- * [
- *   FormatDownloadState(consumable: Consumable(id="2", formats=[AUDIO_BOOK]), format=AUDIO_BOOK, ...)
- * ]
- * (Consumable "1" is excluded because it has 2 formats but only 1 download state)
- *
- * HINT:
- * Consider how you can group related items and compare counts to determine completeness.
- *
- * @return A filtered list containing only [FormatDownloadState]s for consumables with complete format coverage
+ * Filters this list so that only download states for consumables where ALL formats have started
+ * downloading are included. If a consumable is missing a download state for any of its formats,
+ * ALL of its download states must be excluded.
  */
 fun List<FormatDownloadState>.formatsWithDownloadStates(): List<FormatDownloadState> {
     // TODO: Implement this function to make Test 1 pass
@@ -323,32 +303,9 @@ fun List<FormatDownloadState>.formatsWithDownloadStates(): List<FormatDownloadSt
 }
 
 /**
- * ========================================
- * EXTENSION FUNCTION 2: toDownloadStateUiModel
- * ========================================
- *
- * GOAL:
- * Transform multiple [FormatDownloadState]s into a single [DownloadStateUiModel] per consumable.
- * Combine the download progress from all formats into one percentage.
- *
- * EXAMPLE INPUT:
- * [
- *   FormatDownloadState(consumable: Consumable(id="1", ...), format=AUDIO_BOOK, downloadedBytes=600, sizeInTotalBytes=1300),
- *   FormatDownloadState(consumable: Consumable(id="1", ...), format=EBOOK, downloadedBytes=800, sizeInTotalBytes=1000),
- *   FormatDownloadState(consumable: Consumable(id="2", ...), format=AUDIO_BOOK, downloadedBytes=1500, sizeInTotalBytes=1500)
- * ]
- *
- * EXAMPLE OUTPUT:
- * [
- *   DownloadStateUiModel(consumableId="1", downloadProgressInPct=60),  // (600+800)/(1300+1000)*100 = 60%
- *   DownloadStateUiModel(consumableId="2", downloadProgressInPct=100)  // (1500/1500)*100 = 100%
- * ]
- *
- * HINT:
- * Think about how to aggregate multiple download states for the same consumable into a single progress percentage.
- * Look at the example output calculations to understand what the final percentage represents.
- *
- * @return A list of [DownloadStateUiModel] with one entry per unique consumable
+ * Combines all format download states for the same consumable into a single [DownloadStateUiModel].
+ * Progress is calculated across all formats: (total downloaded bytes / total size in bytes) * 100.
+ * Returns one [DownloadStateUiModel] per consumable.
  */
 fun List<FormatDownloadState>.toDownloadStateUiModel(): List<DownloadStateUiModel> {
     // TODO: Implement this function to make Test 2 pass
